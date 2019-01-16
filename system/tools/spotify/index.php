@@ -9,12 +9,6 @@
 //    header('Access-Control-Max-Age: 86400');    // cache for 1 day
 //}
 
-header('Access-Control-Allow-Origin: *');
-
-header('Access-Control-Allow-Methods: GET, POST');
-
-header("Access-Control-Allow-Headers: X-Requested-With");
-
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 
@@ -27,15 +21,25 @@ $api = new SpotifyWebAPI\SpotifyWebAPI();
 // Fetch the saved access token from somewhere. A database for example.
 $api->setAccessToken($_SESSION['accessToken']);
 
-// It's now possible to request data about the currently authenticated user
-var_dump(
-    $api->me()
-);
+$data = null;
+if (isset($api)) {
+    if (isset($_GET['next'])) $api->next();
+    if (isset($_GET['previous'])) $api->previous();
 
-// Getting Spotify catalog data is of course also possible
-var_dump(
-    $api->getMyCurrentTrack()
-);
+    $data = (object) [
+        'user' => (object) [
+            'name' => $api->me()->display_name,
+            'image' => $api->me()->images[0]->url
+        ],
+        'current' => (object) [
+            'is_playing' => $api->getMyCurrentTrack()->is_playing,
+            'item' => (object) [
+                'name' => $api->getMyCurrentTrack()->album->name,
+                'artists' => $api->getMyCurrentTrack()->album->artists,
+                'images' => $api->getMyCurrentTrack()->album->images
+            ]
+        ]
+    ];
+}
 
-if (isset($_GET['next'])) $api->next();
-if (isset($_GET['previous'])) $api->previous();
+return json_encode($data);
