@@ -1,0 +1,35 @@
+.spotify {
+  .play {
+    &._previous {
+      grid-area: previous;
+    }
+    &._next {
+      grid-area: next;
+    }
+  }
+
+  .track {
+    grid-area: track;
+
+    figure {
+      img {
+        max-width: 10rem;
+        height: auto;
+      }
+
+      figcaption {
+        .playToggle {
+
+        }
+
+        .artists {
+
+        }
+
+        .track-name {
+
+        }
+      }
+    }
+  }
+}

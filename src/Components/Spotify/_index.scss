@@ -1,0 +1,11 @@
+@import "track";
+@import "user";
+
+.spotify {
+  display: grid;
+  grid-template-areas:
+      "user user user"
+      "previous track next";
+  grid-template-rows: 2.5rem 1fr;
+  grid-template-columns: 2.5rem auto 2.5rem;
+}

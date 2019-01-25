@@ -1,0 +1,17 @@
+.spotify {
+  .logged-in-user {
+    grid-area: user;
+
+    figure {
+      img {
+        max-width: 2.5rem;
+        height: auto;
+        border-radius: 100%;
+      }
+
+      figcaption {
+        font-size: 0.5rem;
+      }
+    }
+  }
+}
