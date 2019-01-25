@@ -32,7 +32,7 @@ $api = new SpotifyWebAPI\SpotifyWebAPI();
 // Fetch the saved access token from somewhere. A database for example.
 $api->setAccessToken($credentials->accessToken);
 
-$errors = (object) [
+$errors = (object)[
     'spotify' => []
 ];
 
@@ -43,7 +43,7 @@ try {
         header('location: ./auth.php');
         exit;
     } else {
-        array_push($errors->spotify, (object) [
+        array_push($errors->spotify, (object)[
             'user' => $e->getCode()
         ]);
     }
@@ -52,7 +52,7 @@ try {
 try {
     $track = $api->getMyCurrentTrack();
 } catch (Exception $e) {
-    array_push($errors->spotify, (object) [
+    array_push($errors->spotify, (object)[
         'track' => $e->getCode()
     ]);
 }
@@ -60,7 +60,7 @@ try {
 try {
     $devices = $api->getMyDevices();
 } catch (Exception $e) {
-    array_push($errors->spotify, (object) [
+    array_push($errors->spotify, (object)[
         'devices' => $e->getCode()
     ]);
 }
@@ -98,7 +98,7 @@ if (isset($post_data->action) && $post_data->action == 'togglePlay') {
 }
 
 $user = [
-    'user' => (object) [
+    'user' => (object)[
         'name' => $user->display_name,
         'image' => $user->images[0]->url,
         'data' => $user
@@ -107,11 +107,12 @@ $user = [
 
 if (isset($track->is_playing)) {
     $track = [
-        'track' => (object) [
+        'track' => (object)[
             'is_playing' => $track->is_playing,
             'item' => (object)[
-                'name' => $track->item->album->name,
-                'artists' => $track->item->album->artists,
+                'id' => $track->item->id,
+                'name' => $track->item->name,
+                'artists' => $track->item->artists,
                 'images' => $track->item->album->images
             ],
             'data' => $track->item
@@ -119,7 +120,7 @@ if (isset($track->is_playing)) {
     ];
 } else {
     $track = [
-        'track' => (object) [
+        'track' => (object)[
             'is_playing' => false
         ]
     ];
@@ -127,7 +128,7 @@ if (isset($track->is_playing)) {
 
 if (!empty($devices)) {
     $devices = [
-        'devices' => (object) $devices->devices
+        'devices' => (object)$devices->devices
     ];
 }
 
